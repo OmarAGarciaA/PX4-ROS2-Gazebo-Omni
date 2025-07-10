@@ -216,11 +216,9 @@ Pressing *Space* will arm the drone. Wait a moment and it will takeoff and switc
 When closing the simulation, it is very tempting to just close the terminal windows. However, this will leave Gazebo running in the background, potentially causing issues when you run Gazebo in the future. To correctly end the Gazebo simulation, go to it's terminal window and click *Ctrl+C*. This will close Gazebo and all of it's child processes. Then, you can close the other terminal windows.
  
 
-	
-	
-	
-	
-	
+## Side Notes
+/home/omarg/PX4-Autopilot/Tools/simulation/gz/worlds
+Location of the file to change solver parameters
 	
 	
 	
