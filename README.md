@@ -216,11 +216,133 @@ Pressing *Space* will arm the drone. Wait a moment and it will takeoff and switc
 When closing the simulation, it is very tempting to just close the terminal windows. However, this will leave Gazebo running in the background, potentially causing issues when you run Gazebo in the future. To correctly end the Gazebo simulation, go to it's terminal window and click *Ctrl+C*. This will close Gazebo and all of it's child processes. Then, you can close the other terminal windows.
  
 
+##Possible Error
+
 ## Side Notes
 /home/omarg/PX4-Autopilot/Tools/simulation/gz/worlds
 Location of the file to change solver parameters
-	
-	
+
+Change solver to 'dart' for multithread faster solving of physiscs. Solver is fixed step. Max iter step control the fized step.
+
+ ##Possible Error Sequence
+
+Error:
+colcon build
+Starting >>> px4_msgs
+--- stderr: px4_msgs                         
+CMake Error at /opt/ros/humble/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:59 (message):
+  execute_process(/usr/bin/python3 -m rosidl_adapter --package-name px4_msgs
+  --arguments-file
+  /home/ign/offboard_control_ws/build/px4_msgs/rosidl_adapter_arguments_px4_msgs.json
+  --output-dir
+  /home/ign/offboard_control_ws/build/px4_msgs/rosidl_adapter/px4_msgs
+  --output-file
+  /home/ign/offboard_control_ws/build/px4_msgs/rosidl_adapter/px4_msgs.idls)
+  returned error code 1:
+
+  AttributeError processing template 'msg.idl.em'
+
+  Traceback (most recent call last):
+
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/resource/_init_.py", line 51, in evaluate_template
+      em.BUFFERED_OPT: True,
+
+  AttributeError: module 'em' has no attribute 'BUFFERED_OPT'
+
+  
+
+  During handling of the above exception, another exception occurred:
+
+  
+
+  Traceback (most recent call last):
+
+    File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+      return _run_code(code, main_globals, None,
+    File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+      exec(code, run_globals)
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/_main_.py", line 19, in <module>
+      sys.exit(main())
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/main.py", line 53, in main
+      abs_idl_file = convert_to_idl(
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/_init_.py", line 19, in convert_to_idl
+      return convert_msg_to_idl(
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/msg/_init_.py", line 39, in convert_msg_to_idl
+      expand_template('msg.idl.em', data, output_file, encoding='iso-8859-1')
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/resource/_init_.py", line 23, in expand_template
+      content = evaluate_template(template_name, data)
+    File "/opt/ros/humble/local/lib/python3.10/dist-packages/rosidl_adapter/resource/_init_.py", line 69, in evaluate_template
+      _interpreter.shutdown()
+
+  AttributeError: 'NoneType' object has no attribute 'shutdown'
+
+Call Stack (most recent call first):
+  /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+  CMakeLists.txt:28 (rosidl_generate_interfaces)
+
+
+---
+Failed   <<< px4_msgs [0.76s, exited with code 1]
+                                
+Summary: 0 packages finished [0.90s]
+  1 package failed: px4_msgs
+  1 package had stderr output: px4_msgs
+  1 package not processed
+
+Solution:
+pip3 uninstall empy pip3 install empy==3.3.4 cd {your workspace_ws} rm -rf build install log colcon build --symlink-install
+
+Error:
+colcon build --symlink-install
+Starting >>> px4_msgs
+--- stderr: px4_msgs                               
+Traceback (most recent call last):
+  File "/home/ign/offboard_control_ws/build/px4_msgs/ament_cmake_python/px4_msgs/setup.py", line 4, in <module>
+    setup(
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_init_.py", line 115, in setup
+    return distutils.core.setup(**attrs)
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 186, in setup
+    return run_commands(dist)
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_distutils/core.py", line 202, in run_commands
+    dist.run_commands()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 1002, in run_commands
+    self.run_command(cmd)
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/dist.py", line 1102, in run_command
+    super().run_command(command)
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_distutils/dist.py", line 1021, in run_command
+    cmd_obj.run()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 312, in run
+    self.find_sources()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 320, in find_sources
+    mm.run()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/command/egg_info.py", line 548, in run
+    self.prune_file_list()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/command/sdist.py", line 162, in prune_file_list
+    super().prune_file_list()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_distutils/command/sdist.py", line 386, in prune_file_list
+    base_dir = self.distribution.get_fullname()
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_core_metadata.py", line 275, in get_fullname
+    return _distribution_fullname(self.get_name(), self.get_version())
+  File "/home/ign/.local/lib/python3.10/site-packages/setuptools/_core_metadata.py", line 293, in _distribution_fullname
+    canonicalize_version(version, strip_trailing_zero=False),
+TypeError: canonicalize_version() got an unexpected keyword argument 'strip_trailing_zero'
+gmake[2]: * [CMakeFiles/ament_cmake_python_build_px4_msgs_egg.dir/build.make:70: CMakeFiles/ament_cmake_python_build_px4_msgs_egg] Error 1
+gmake[1]: * [CMakeFiles/Makefile2:447: CMakeFiles/ament_cmake_python_build_px4_msgs_egg.dir/all] Error 2
+gmake[1]: * Waiting for unfinished jobs....
+gmake: * [Makefile:146: all] Error 2
+---
+Failed   <<< px4_msgs [22.5s, exited with code 2]
+                                 
+Summary: 0 packages finished [22.6s]
+  1 package failed: px4_msgs
+  1 package had stderr output: px4_msgs
+  1 package not processed
+
+Solution:
+pip install setuptools==65.5.1
+
+
+Delete build install & log folder from ws. Redo source install\setup.bash and colcon build --symlink-install
 	
 	
 	
